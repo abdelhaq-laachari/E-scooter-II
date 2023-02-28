@@ -60,8 +60,8 @@ export default function SignIn() {
           toast.error(error.response.data.message);
         }
         else{
+          toast.error("Something went wrong");
         }
-        console.log(error);
       }
     }
   };

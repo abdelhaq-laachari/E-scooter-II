@@ -1,10 +1,15 @@
-import '@/styles/globals.css';
-import Sidebar from '../components/Sidebar';
+import "@/styles/globals.css";
+import Sidebar from "../components/Sidebar";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 export default function App({ Component, pageProps }) {
   return (
-    // <Sidebar>
-    // </Sidebar>
+    <>
+      {/* <Sidebar> */}
       <Component {...pageProps} />
+      <ToastContainer />
+      {/* </Sidebar> */}
+    </>
   );
 }
