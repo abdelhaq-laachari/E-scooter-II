@@ -53,7 +53,12 @@ const register = asyncHandler(async (req, res) => {
 // @access  Public
 const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  const admin = await User.findOne({ email });
+  const admin = await Admin.findOne({ email });
+
+  if(!admin){
+    res.status(404);
+    throw new Error("Admin not found");
+  }
 
   if (admin && (await bcrypt.compare(password, admin.password))) {
     res.json({

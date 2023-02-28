@@ -52,13 +52,16 @@ export default function SignIn() {
     setFormErrors(validate(formData));
     if (email && password) {
       try {
-        const res = await axios.post("/admin/login", formData);
+        const res = await axios.post(`/api/admin/login`, formData);
         Cookies.set("token", res.data.token);
-        window.location.href = "/";
+        console.log(res.data);
       } catch (error) {
         if (error.response.status === 401) {
           toast.error(error.response.data.message);
         }
+        else{
+        }
+        console.log(error);
       }
     }
   };
