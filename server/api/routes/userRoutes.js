@@ -1,8 +1,9 @@
 const express = require("express");
+const { getScooters, rentScooter } = require("../controller/scooterController");
 const router = express.Router();
 
 // import controller
-const {register, login, getUsers, rentScooter, getScooters} = require("../controller/userController");
+const {register, login} = require("../controller/userController");
 
 // @desc    Register a new user
 router.route("/register").post(register);

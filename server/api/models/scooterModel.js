@@ -12,6 +12,9 @@ const scooterSchema = mongoose.Schema({
   isRented: {
     type: String,
   },
+  company: {
+    type: String,
+  },
   model: {
     type: String,
   },

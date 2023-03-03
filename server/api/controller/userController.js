@@ -19,7 +19,9 @@ const register = asyncHandler(async (req, res) => {
 
   //   check if the admin already exists
 
-  const userExists = await User.findOne({ email });
+  const userExists = await User.findOne({
+    email: email.toLowerCase(),
+  });
   if (userExists) {
     res.status(400);
     throw new Error("User already exists");
@@ -32,7 +34,7 @@ const register = asyncHandler(async (req, res) => {
   // create admin
   const user = await User.create({
     name,
-    email,
+    email: email.toLowerCase(),
     password: hashedPassword,
     token: generateToken(),
   });
@@ -54,7 +56,9 @@ const register = asyncHandler(async (req, res) => {
 
 const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  const user = await User.findOne({ email });
+  const user = await User.findOne({
+    email: email.toLowerCase(),
+  });
 
   if (user && (await bcrypt.compare(password, user.password))) {
     res.json({
@@ -66,39 +70,14 @@ const login = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Rent a scooter
-// @route   POST /user/rent
+
+// @desc    Get all users
+// @route   GET /allUsers
 // @access  Private
 
-const rentScooter = asyncHandler(async (req, res) => {
-  const scooterId = req.params.id;
-  if (!scooterId) {
-    res.status(400);
-    throw new Error("Scooter not found");
-  }
-  
-  const rent = await Scooter.findByIdAndUpdate(scooterId, {
-    isRented: "Rented",
-  });
-  
-  const newScooter = await Scooter.findById(scooterId);
-
-  if (rent) {
-    res.status(200).json(newScooter);
-  } else {
-    res.status(400);
-    throw new Error("Scooter not found");
-  }
-});
-
-// @desc    Get all scooters
-// @route   GET /allScooters
-// @access  Private
-
-const getScooters = asyncHandler(async (req, res) => {
-  // const scooters = await Scooter.find({ isRented: "Not Rented"});
-  const scooters = await Scooter.find({});
-  res.json(scooters);
+const getUsers = asyncHandler(async (req, res) => {
+  const users = await User.find({});
+  res.json(users);
 });
 
 // Generate JWT
@@ -111,6 +90,5 @@ const generateToken = (id) => {
 module.exports = {
   register,
   login,
-  getScooters,
-  rentScooter,
+  getUsers,
 };

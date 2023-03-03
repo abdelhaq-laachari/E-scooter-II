@@ -6,6 +6,7 @@ const port = process.env.PORT || 6000; // set our port
 const app = express();
 const cors = require("cors");
 const connectDB = require("./config/db"); // import db connection
+const cookieParser = require('cookie-parser'); // import cookie parser
 
 connectDB(); // connect to db
 
@@ -15,6 +16,7 @@ app.use(cors(
     
 ));
 
+app.use(cookieParser());
 
 app.use("/user", require("./routes/userRoutes"));
 app.use("/admin", require("./routes/adminRoutes"));

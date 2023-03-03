@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const Admin = require("../models/adminModel");
+const User = require("../models/userModel");
 const Scooter = require("../models/scooterModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
@@ -19,7 +20,9 @@ const register = asyncHandler(async (req, res) => {
 
   //   check if the admin already exists
 
-  const adminExists = await Admin.findOne({ email });
+  const adminExists = await Admin.findOne({
+    email: email.toLowerCase(),
+  });
   if (adminExists) {
     res.status(400);
     throw new Error("User already exists");
@@ -32,7 +35,7 @@ const register = asyncHandler(async (req, res) => {
   // create admin
   const admin = await Admin.create({
     name,
-    email,
+    email: email.toLowerCase(),
     password: hashedPassword,
     token: generateToken(),
   });
@@ -53,9 +56,11 @@ const register = asyncHandler(async (req, res) => {
 // @access  Public
 const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  const admin = await Admin.findOne({ email });
+  const admin = await Admin.findOne({
+    email: email.toLowerCase(),
+  });
 
-  if(!admin){
+  if (!admin) {
     res.status(404);
     throw new Error("Admin not found");
   }
@@ -70,60 +75,23 @@ const login = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Create new scooter
-// @route   POST /admin/scooter
+// @desc    Get me
+// @route   GET /admin/me
 // @access  Private
 
-const createScooter = asyncHandler(async (req, res) => {
-  const { latitude, longitude, model, battery, price } = req.body;
+const getMe = asyncHandler(async (req, res) => {
+  const admin = await Admin.findById(req.admin.id);
 
-  if (!latitude || !longitude || !model || !battery || !price) {
-    res.status(400);
-    throw new Error("Please fill in all fields");
-  }
-
-  const scooter = await Scooter.create({
-    latitude,
-    longitude,
-    isRented: "Not Rented",
-    model,
-    battery,
-    price,
-  });
-
-  if (scooter) {
-    res.status(201).json({
-      message: "Scooter created successfully",
+  if (admin) {
+    res.json({
+      _id: admin._id,
+      name: admin.name,
+      email: admin.email,
     });
   } else {
-    res.status(400);
-    throw new Error("Invalid scooter data");
-  }
-});
-
-// @desc    Delete scooter
-// @route   DELETE /admin/scooter/:id
-// @access  Private
-
-const deleteScooter = asyncHandler(async (req, res) => {
-  const scooter = await Scooter.findById(req.params.id);
-
-  if (scooter) {
-    await scooter.remove();
-    res.json({ message: "Scooter removed" });
-  } else {
     res.status(404);
-    throw new Error("Scooter not found");
+    throw new Error("Admin not found");
   }
-});
-
-// @desc    Get all users
-// @route   GET /allUsers
-// @access  Private
-
-const getUsers = asyncHandler(async (req, res) => {
-  const users = await User.find({});
-  res.json(users);
 });
 
 // Generate JWT
@@ -136,7 +104,5 @@ const generateToken = (id) => {
 module.exports = {
   register,
   login,
-  getUsers,
-  createScooter,
-  deleteScooter,
+  getMe,
 };

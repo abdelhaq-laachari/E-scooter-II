@@ -6,8 +6,9 @@ import BarChart from "../components/BarChart";
 import RecentOrders from "../components/RecentOrders";
 
 
-export default function Home() {
-  return (
+
+function Home(){
+  return(
     <>
       <Head>
         <title>Create Next App</title>
@@ -16,7 +17,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="bg-gray-100 min-h-screen">
-        <Header />
+        <Header page="Dashboard" />
         <TopCards />
         <div className="p-4 grid md:grid-cols-3 grid-cols-1 gap-4">
           <BarChart />
@@ -24,5 +25,7 @@ export default function Home() {
         </div>
       </main>
     </>
-  );
+  )
 }
+
+export default Home;
