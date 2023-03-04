@@ -24,6 +24,10 @@ const scooterSchema = mongoose.Schema({
   price: {
     type: String,
   },
+  isDisabled: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = mongoose.model("Scooter", scooterSchema);

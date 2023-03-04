@@ -3,6 +3,7 @@ import { FaShoppingBag } from "react-icons/fa";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import Header from "@/components/Header";
 import { config } from "@/getToken";
+import axios from "axios";
 
 const orders = () => {
   const [scooters, setScooters] = React.useState();
@@ -20,19 +21,21 @@ const orders = () => {
   }, []);
   return (
     <div className="bg-gray-100 min-h-screen">
-      <Header page="Orders"/>
+      <Header page="Orders" />
       <div className="p-4">
         <div className="w-full m-auto p-4 border rounded-lg bg-white overflow-y-auto">
           <div className="my-3 p-2 grid md:grid-cols-4 sm:grid-cols-3 grid-cols-2 items-center justify-between cursor-pointer">
             <span>Order</span>
+            <span className="hidden md:grid">Customer</span>
+            <span className="hidden sm:grid">Scooter</span>
             <span className="sm:text-left text-right">Status</span>
-            <span className="hidden md:grid">Last Order</span>
-            <span className="hidden sm:grid">Method</span>
           </div>
           <ul>
             {!scooters ? (
               <div className="flex justify-center items-center bg-white h-[70vh]">
-                <p className="text-gray-800 font-bold">No Scooters available</p>
+                <p className="text-gray-800 font-bold">
+                  No orders yet, please check back later
+                </p>
               </div>
             ) : (
               scooters?.map((scooter, id) => (

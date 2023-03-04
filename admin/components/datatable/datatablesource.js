@@ -39,8 +39,8 @@ export const scooters = [
   },
   {
     field: "isRented",
-    headerName: "Status",
-    width: 200,
+    headerName: "Rent Status",
+    width: 100,
     renderCell: (params) => {
       return (
         <div
@@ -53,6 +53,24 @@ export const scooters = [
           }
         >
           {params.row.isRented}
+        </div>
+      );
+    },
+  },
+  {
+    field: "isDisabled",
+    headerName: "Status",
+    width: 100,
+    renderCell: (params) => {
+      return (
+        <div
+          className={
+            params.row.isDisabled == true
+              ? "bg-red-400 p-2 rounded-lg ml-6"
+              : "bg-green-400 p-2 rounded-lg ml-6"
+          }
+        >
+          {params.row.isDisabled}
         </div>
       );
     },

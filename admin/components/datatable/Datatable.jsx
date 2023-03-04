@@ -3,6 +3,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { scooters } from "./datatablesource";
 import { useRouter } from 'next/router'
 import Styles from "./datatable.module.css";
+import { scooterAction } from "./actionTable";
 
 const Datatable = ({ data, title }) => {
   // const path = window.location.pathname.split("/")[2];
@@ -29,7 +30,7 @@ const Datatable = ({ data, title }) => {
         className={Styles.datagrid}
         getRowId={(row) => row._id}
         rows={data}
-        columns={scooters}
+        columns={scooters.concat(scooterAction)}
         pageSize={9}
         rowsPerPageOptions={[9]}
         checkboxSelection

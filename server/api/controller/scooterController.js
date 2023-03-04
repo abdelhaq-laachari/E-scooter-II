@@ -18,7 +18,7 @@ const getScooters = asyncHandler(async (req, res) => {
 const createScooter = asyncHandler(async (req, res) => {
   const { latitude, longitude, company, model, battery, price } = req.body;
 
-  if (!latitude || !longitude || !company || !model || !battery || !price) {
+  if (!latitude || !longitude || !company || !model || !price) {
     res.status(400);
     throw new Error("Please fill in all fields");
   }
@@ -29,14 +29,12 @@ const createScooter = asyncHandler(async (req, res) => {
     isRented: "Not Rented",
     company,
     model,
-    battery,
+    battery: "4 hours",
     price,
   });
 
   if (scooter) {
-    res.status(201).json({
-      message: "Scooter created successfully",
-    });
+    res.status(201).json(scooter);
   } else {
     res.status(400);
     throw new Error("Invalid scooter data");
@@ -53,6 +51,27 @@ const deleteScooter = asyncHandler(async (req, res) => {
   if (scooter) {
     await scooter.remove();
     res.json({ message: "Scooter removed" });
+  } else {
+    res.status(404);
+    throw new Error("Scooter not found");
+  }
+});
+
+// @desc    Disable and enable scooter
+// @route   POST /admin/scooter/:id
+// @access  Private
+
+const disableScooter = asyncHandler(async (req, res) => {
+  const scooter = await Scooter.findById(req.params.id);
+
+  if (scooter) {
+    scooter.isDisabled = !scooter.isDisabled;
+    await scooter.save();
+    if (scooter.isDisabled) {
+      res.json({ message: "Scooter disabled" });
+    } else {
+      res.json({ message: "Scooter enabled" });
+    }
   } else {
     res.status(404);
     throw new Error("Scooter not found");
@@ -90,4 +109,5 @@ module.exports = {
   createScooter,
   deleteScooter,
   rentScooter,
+  disableScooter,
 };
