@@ -86,6 +86,7 @@ const disableScooter = asyncHandler(async (req, res) => {
 const rentScooter = asyncHandler(async (req, res) => {
   const scooterId = req.params.sId;
   const userId = req.params.uId;
+  const rTime = req.body.rTime;
   // const userId = req.user._id;
   if (!scooterId) {
     res.status(400);
@@ -98,11 +99,28 @@ const rentScooter = asyncHandler(async (req, res) => {
 
   const newScooter = await Scooter.findById(scooterId);
 
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const year = date.getFullYear();
+    const hour = date.getHours().toString().padStart(2, "0");
+    const minute = date.getMinutes().toString().padStart(2, "0");
+    return `${day}/${month}/${year} ${hour}:${minute}`;
+  }
+
+  const rentedAt = formatDate(Date.now());
+
+  const returnedAt = formatDate(Date.now() + rTime * 60 * 1000);
+
   if (rent) {
     // res.status(200).json(newScooter);
     const booking = await Booking.create({
       user: userId,
       scooter: scooterId,
+      rentedAt,
+      returnedAt,
+      timeOfRent: rTime,
     });
 
     if (booking) {

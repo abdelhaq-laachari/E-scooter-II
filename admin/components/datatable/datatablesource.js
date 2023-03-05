@@ -95,7 +95,7 @@ export const orders = [
   {
     field: "company",
     headerName: "Company",
-    width: 200,
+    width: 100,
     renderCell: (params) => {
       return (
         <div className="text-base">
@@ -112,6 +112,28 @@ export const orders = [
       return (
         <div className="text-base">
           {params.row.scooter.model}
+        </div>
+      );
+    },
+  },
+  {
+    field: "rentedAt",
+    headerName: "Rented At",
+    width: 150,
+  },
+  {
+    field: "returnedAt",
+    headerName: "Returned At",
+    width: 150,
+  },
+  {
+    field: "timeOfRent",
+    headerName: "Rent Time",
+    width: 100,
+    renderCell: (params) => {
+      return (
+        <div className="text-base">
+          {params.row.timeOfRent} <span className="font-semibold">Minutes</span>
         </div>
       );
     },

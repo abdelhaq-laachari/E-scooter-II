@@ -12,18 +12,19 @@ const bookingSchema = mongoose.Schema(
       required: true,
       ref: "Scooter",
     },
-    // start: {
-    //   type: String,
-    //   required: true,
-    // },
-    // end: {
-    //   type: String,
-    //   required: true,
-    // },
+    rentedAt: {
+      type: String,
+      required: true,
+    },
+    returnedAt: {
+      type: String,
+      required: true,
+    },
+    timeOfRent: {
+      type: Number,
+      required: true,
+    },
   },
-  {
-    timestamps: true,
-  }
 );
 
 module.exports = mongoose.model("Booking", bookingSchema);
