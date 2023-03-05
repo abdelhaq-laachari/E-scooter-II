@@ -1,5 +1,5 @@
 const express = require("express");
-const { getScooters, rentScooter } = require("../controller/scooterController");
+const { getScooters, rentScooter, getRentedScooters } = require("../controller/scooterController");
 const router = express.Router();
 
 // import controller
@@ -15,7 +15,10 @@ router.route("/login").post(login);
 router.route("/allScooters").get(getScooters);
 
 // @desc    Rent a scooter
-router.route("/rent/:id").put(rentScooter);
+router.route("/rent/:sId/:uId").post(rentScooter);
+
+// @desc    Get rented scooters
+router.route("/rented").get(getRentedScooters);
 
 
 // export route file

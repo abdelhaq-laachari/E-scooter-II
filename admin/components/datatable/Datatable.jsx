@@ -1,6 +1,6 @@
 import React from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { scooters } from "./datatablesource";
+import { orders, scooters } from "./datatablesource";
 import { useRouter } from 'next/router'
 import Styles from "./datatable.module.css";
 import { scooterAction } from "./actionTable";
@@ -8,18 +8,17 @@ import { scooterAction } from "./actionTable";
 const Datatable = ({ data, title }) => {
   // const path = window.location.pathname.split("/")[2];
   const router = useRouter()
-  const path = router.pathname.split("/")[2];
-
+  const path = router.pathname;
   // add switch statement to handle different paths
-  // const switchFunction = () => {
-  //   switch (path) {
-  //     case "transaction":
-  //       return scooters.concat();
-  //     case "payments":
-  //       return paymentColumns.concat();
-  //     default:
-  //   }
-  // };
+  const switchFunction = () => {
+    switch (path) {
+      case "/scooters":
+        return scooters.concat(scooterAction);
+      case "/orders":
+        return orders.concat();
+      default:
+    }
+  };
 
   return (
     <div className={Styles.datatable}>
@@ -30,7 +29,7 @@ const Datatable = ({ data, title }) => {
         className={Styles.datagrid}
         getRowId={(row) => row._id}
         rows={data}
-        columns={scooters.concat(scooterAction)}
+        columns={switchFunction()}
         pageSize={9}
         rowsPerPageOptions={[9]}
         checkboxSelection

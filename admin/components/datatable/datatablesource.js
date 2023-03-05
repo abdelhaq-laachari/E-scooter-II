@@ -76,3 +76,44 @@ export const scooters = [
     },
   },
 ];
+
+
+export const orders = [
+  { field: "_id", headerName: "ID", width: 100 },
+  {
+    field: "user",
+    headerName: "Customer",
+    width: 100,
+    renderCell: (params) => {
+      return (
+        <div className="text-base">
+          {params.row.user.name}
+        </div>
+      );
+    },
+  },
+  {
+    field: "company",
+    headerName: "Company",
+    width: 200,
+    renderCell: (params) => {
+      return (
+        <div className="text-base">
+          {params.row.scooter.company}
+        </div>
+      );
+    },
+  },
+  {
+    field: "model",
+    headerName: "Model",
+    width: 200,
+    renderCell: (params) => {
+      return (
+        <div className="text-base">
+          {params.row.scooter.model}
+        </div>
+      );
+    },
+  },
+];

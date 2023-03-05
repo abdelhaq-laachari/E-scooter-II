@@ -54,7 +54,7 @@ export default function SignIn() {
       try {
         const res = await axios.post(`/api/admin/login`, formData);
         Cookies.set("token", res.data.token);
-        console.log(res.data);
+        window.location.href = "/";
       } catch (error) {
         if (error.response.status === 401) {
           toast.error(error.response.data.message);

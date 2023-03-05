@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const Scooter = require("../models/scooterModel");
+const Booking = require("../models/bookingModel");
 
 // @desc    Get all scooters
 // @route   GET /allScooters
@@ -83,7 +84,9 @@ const disableScooter = asyncHandler(async (req, res) => {
 // @access  Private
 
 const rentScooter = asyncHandler(async (req, res) => {
-  const scooterId = req.params.id;
+  const scooterId = req.params.sId;
+  const userId = req.params.uId;
+  // const userId = req.user._id;
   if (!scooterId) {
     res.status(400);
     throw new Error("Scooter not found");
@@ -96,11 +99,33 @@ const rentScooter = asyncHandler(async (req, res) => {
   const newScooter = await Scooter.findById(scooterId);
 
   if (rent) {
-    res.status(200).json(newScooter);
+    // res.status(200).json(newScooter);
+    const booking = await Booking.create({
+      user: userId,
+      scooter: scooterId,
+    });
+
+    if (booking) {
+      res.status(201).json(booking);
+    } else {
+      res.status(400);
+      throw new Error("Invalid booking data");
+    }
   } else {
     res.status(400);
     throw new Error("Scooter not found");
   }
+});
+
+// @desc    Get rented scooters
+// @route   GET /user/rented
+// @access  Private
+
+const getRentedScooters = asyncHandler(async (req, res) => {
+  const booking = await Booking.find({})
+    .populate("user", "name email")
+    .populate("scooter", "company model");
+  res.json(booking);
 });
 
 // export route file
@@ -110,4 +135,5 @@ module.exports = {
   deleteScooter,
   rentScooter,
   disableScooter,
+  getRentedScooters,
 };
